@@ -1,0 +1,143 @@
+---
+groups:
+- name: develop
+  jobs:
+  - prepare-itest-env
+  - build-accounts
+#  - itest-accounts
+#- name: publish
+#  jobs:
+#  - accounts-major
+#  - accounts-minor
+- name: destroy
+  jobs:
+  - destroy
+
+cf-params: &cf-params
+  CF_API_URL: {{cf-api-url}}
+  CF_SKIP_SSL: {{cf-skip-ssl}}
+  CF_USERNAME: {{cf-username}}
+  CF_PASSWORD: {{cf-password}}
+  CF_ORG: {{cf-org}}
+  CF_SPACE: {{cf-space}}
+
+jobs:
+- name: destroy
+  public: true
+  plan:
+  - get: accounts-service
+  - task: destroy
+    file: ../tasks/destroy/task.yml
+    params:
+      <<: *cf-params
+
+- name: prepare-itest-env
+  public: true
+  plan:
+  - get: accounts-service
+  - task: prepare-cf
+    file: ../tasks/create-services/task.yml
+    params:
+      <<: *cf-params
+      CF_DB_SERVICE: {{cf-db-service}}
+      CF_CONFIG_SERVER_URI: {{cf-config-server-uri}}
+      CF_CONFIG_SERVER_LABEL: {{cf-config-server-label}}
+
+- name: build-accounts
+  public: true
+#  serial_groups: [ accounts-version ]
+  plan:
+#  - aggregate:
+  - get: accounts-service
+#    - get: project
+#      resource: accounts-service
+#      trigger: true
+#    - get: version
+#      resource: accounts-version
+#      params: { pre: rc }
+  - task: build
+    file: ../tasks/build/task.yml
+    params:
+      ARTIFACT_ID: accounts
+  - put: accounts-milestone
+    params: { file: build-output/accounts-*.jar }
+#  - put: accounts-version
+#    params: { file: version/number }
+
+#- name: itest-accounts
+#  public: true
+#  serial: true
+#  plan:
+#  - aggregate:
+#    - get: pipeline
+#      passed: [ build-accounts ]
+#    - get: release
+#      resource: accounts-milestone
+#      passed: [ build-accounts ]
+#      trigger: true
+#  - task: prepare-manifest
+#    file: pipeline/ci/prepare-manifest.yml
+#    params:
+#      <<: *cf-params
+#      CF_APP_NAME: {{cf-accounts-service-name}}
+#      CF_APP_HOST: {{cf-accounts-service-host}}
+#      CF_APP_SERVICES: {{cf-accounts-service-services}}
+#      CF_ARTIFACT_ID: accounts
+#  - put: cf-itest
+#    params:
+#      manifest: prepare-manifest-output/manifest.yml
+#      current_app_name: {{cf-accounts-service-name}}
+#
+#- name: accounts-major
+#  public: true
+#  serial_groups: [ accounts-version ]
+#  plan:
+#  - get: accounts-version
+#    params: { bump: major, pre: rc }
+#  - put: accounts-version
+#    params: { file: accounts-version/number }
+#
+#- name: accounts-minor
+#  public: true
+#  serial_groups: [ accounts-version ]
+#  plan:
+#  - get: accounts-version
+#    params: { bump: minor, pre: rc }
+#  - put: accounts-version
+#    params: { file: accounts-version/number }
+
+resources:
+- name: accounts-service
+  type: git
+  source:
+    uri: {{git-uri}}
+    branch: {{git-branch}}
+
+#- name: accounts-version
+#  type: semver
+#  source:
+#    driver: git
+#    uri: {{accounts-version-git-uri}}
+#    branch: {{accounts-version-git-branch}}
+#    file: number
+#    initial_version: 1.0.0-rc.0
+#    private_key: {{git-private-key}}
+
+#- name: accounts-milestone
+#  type: s3
+#  source:
+#    bucket: {{s3-bucket-milestone}}
+#    regexp: accounts-(.*).jar
+#    access_key_id: {{s3-access-key-id}}
+#    secret_access_key: {{s3-secret-access-key}}
+#    endpoint: {{s3-endpoint}}
+#
+#- name: cf-itest
+#  type: cf
+#  source:
+#    api: {{cf-api-url}}
+#    skip_cert_check: true
+#    username: {{cf-username}}
+#    password: {{cf-password}}
+#    organization: {{cf-org}}
+#    space: {{cf-space}}
