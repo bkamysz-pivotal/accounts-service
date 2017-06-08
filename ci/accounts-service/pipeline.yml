@@ -59,8 +59,8 @@ jobs:
     file: ../tasks/build/task.yml
     params:
       ARTIFACT_ID: accounts
-  - put: accounts-milestone
-    params: { file: build-output/accounts-*.jar }
+#  - put: accounts-milestone
+#    params: { file: build-output/accounts-*.jar }
 #  - put: accounts-version
 #    params: { file: version/number }
 
@@ -117,8 +117,8 @@ resources:
 #  type: semver
 #  source:
 #    driver: git
-#    uri: {{accounts-version-git-uri}}
-#    branch: {{accounts-version-git-branch}}
+#    uri: {{git-uri}}
+#    branch: {{git-branch}}
 #    file: number
 #    initial_version: 1.0.0-rc.0
 #    private_key: {{git-private-key}}

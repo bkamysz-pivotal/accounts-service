@@ -1,6 +1,6 @@
 ---
-git-uri: git@github.com:bkamysz-pivotal/accounts-service.git
-git-branch: master
+git-uri: https://github.com/bkamysz-pivotal/accounts-service.git
+git-branch: development
 #accounts-version-git-uri: git@github.com:bkamysz-pivotal/accounts-service.git
 #accounts-version-git-branch: version
 s3-endpoint: s3.amazonaws.com
