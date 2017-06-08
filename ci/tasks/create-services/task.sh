@@ -6,7 +6,7 @@ set -e
 
 CF_SERVICE_PROVISION_TIMEOUT=${CF_SERVICE_PROVISION_TIMEOUT:-500}
 
-source $(dirname $0)/common.sh
+source accounts-service/ci/accounts-service/common.sh
 
 login $CF_API_URL $CF_USERNAME $CF_PASSWORD $CF_SKIP_SSL
 
