@@ -8,7 +8,7 @@ image_resource:
     tag: 'latest'
 
 inputs:
-- name: pipeline
+- name: accounts-service
 
 outputs:
 - name: itest
@@ -22,4 +22,4 @@ params:
   CF_SPACE:
 
 run:
-  path: ci/destroy/task.sh
+  path: accounts-service/ci/destroy/task.sh
