@@ -56,7 +56,7 @@ jobs:
 #      resource: accounts-version
 #      params: { pre: rc }
   - task: build
-    file: ci/tasks/build/task.yml
+    file: ci/tasks/build-account-service/task.yml
     params:
       ARTIFACT_ID: accounts
 #  - put: accounts-milestone
