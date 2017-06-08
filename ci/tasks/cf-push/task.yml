@@ -8,8 +8,8 @@ image_resource:
     tag: 'latest'
 
 inputs:
-- name: pipeline
-- name: release
+- name: accounts-service
+#- name: release
 
 outputs:
 - name: prepare-manifest-output
@@ -23,4 +23,4 @@ params:
   CF_APP_SERVICES:
 
 run:
-  path: pipeline/ci/prepare-manifest.sh
+  path: accounts-service/ci/tasks/cf-push/task.sh

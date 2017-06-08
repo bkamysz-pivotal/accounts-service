@@ -2,9 +2,9 @@
 groups:
 - name: develop
   jobs:
-  - prepare-itest-env
+  - prepare-cf-env
   - build-accounts
-#  - itest-accounts
+  - cf-push-accounts
 #- name: publish
 #  jobs:
 #  - accounts-major
@@ -31,24 +31,14 @@ jobs:
     params:
       <<: *cf-params
 
-- name: prepare-itest-env
-  public: true
-  plan:
-  - get: accounts-service
-  - task: prepare-cf
-    file: accounts-service/ci/tasks/create-services/task.yml
-    params:
-      <<: *cf-params
-      CF_DB_SERVICE: {{cf-db-service}}
-      CF_CONFIG_SERVER_URI: {{cf-config-server-uri}}
-      CF_CONFIG_SERVER_LABEL: {{cf-config-server-label}}
-
 - name: build-accounts
   public: true
 #  serial_groups: [ accounts-version ]
+  serial: true
   plan:
 #  - aggregate:
   - get: accounts-service
+    trigger: true
 #    - get: project
 #      resource: accounts-service
 #      trigger: true
@@ -64,30 +54,46 @@ jobs:
 #  - put: accounts-version
 #    params: { file: version/number }
 
-#- name: itest-accounts
-#  public: true
-#  serial: true
-#  plan:
+- name: prepare-cf-env
+  public: true
+  serial: true
+  plan:
+  - get: accounts-service
+    passed: [ build-accounts ]
+    trigger: true
+  - task: prepare-cf
+    file: accounts-service/ci/tasks/create-services/task.yml
+    params:
+      <<: *cf-params
+      CF_DB_SERVICE: {{cf-db-service}}
+      CF_CONFIG_SERVER_URI: {{cf-config-server-uri}}
+      CF_CONFIG_SERVER_LABEL: {{cf-config-server-label}}
+
+- name: cf-push-accounts
+  public: true
+  serial: true
+  plan:
 #  - aggregate:
-#    - get: pipeline
-#      passed: [ build-accounts ]
+  - get: accounts-service
+    passed: [ prepare-cf-env ]
+    trigger: true
 #    - get: release
 #      resource: accounts-milestone
 #      passed: [ build-accounts ]
 #      trigger: true
-#  - task: prepare-manifest
-#    file: pipeline/ci/prepare-manifest.yml
-#    params:
-#      <<: *cf-params
-#      CF_APP_NAME: {{cf-accounts-service-name}}
-#      CF_APP_HOST: {{cf-accounts-service-host}}
-#      CF_APP_SERVICES: {{cf-accounts-service-services}}
-#      CF_ARTIFACT_ID: accounts
-#  - put: cf-itest
-#    params:
-#      manifest: prepare-manifest-output/manifest.yml
-#      current_app_name: {{cf-accounts-service-name}}
-#
+  - task: prepare-manifest
+    file: accounts-service/ci/tasks/cf-push/task.yml
+    params:
+      <<: *cf-params
+      CF_APP_NAME: {{cf-accounts-service-name}}
+      CF_APP_HOST: {{cf-accounts-service-host}}
+      CF_APP_SERVICES: {{cf-accounts-service-services}}
+      CF_ARTIFACT_ID: accounts
+  - put: cf-deliver
+    params:
+      manifest: prepare-manifest-output/manifest.yml
+      current_app_name: {{cf-accounts-service-name}}
+
 #- name: accounts-major
 #  public: true
 #  serial_groups: [ accounts-version ]
@@ -132,12 +138,12 @@ resources:
 #    secret_access_key: {{s3-secret-access-key}}
 #    endpoint: {{s3-endpoint}}
 #
-#- name: cf-itest
-#  type: cf
-#  source:
-#    api: {{cf-api-url}}
-#    skip_cert_check: true
-#    username: {{cf-username}}
-#    password: {{cf-password}}
-#    organization: {{cf-org}}
-#    space: {{cf-space}}
+- name: cf-deliver
+  type: cf
+  source:
+    api: {{cf-api-url}}
+    skip_cert_check: true
+    username: {{cf-username}}
+    password: {{cf-password}}
+    organization: {{cf-org}}
+    space: {{cf-space}}
