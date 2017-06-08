@@ -15,8 +15,8 @@ inputs:
 outputs:
 - name: build-output
 
-#params:
-#  TERM: dumb
+params:
+  TERM: dumb
 #  ARTIFACT_ID:
 
 run:
