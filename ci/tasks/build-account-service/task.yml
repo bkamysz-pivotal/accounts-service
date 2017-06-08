@@ -20,4 +20,4 @@ outputs:
 #  ARTIFACT_ID:
 
 run:
-  path: ci/tasks/build-account-service/task.sh
+  path: accounts-service/ci/tasks/build-account-service/task.sh
