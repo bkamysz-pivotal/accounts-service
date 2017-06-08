@@ -27,7 +27,7 @@ jobs:
   plan:
   - get: accounts-service
   - task: destroy
-    file: ci/tasks/destroy/task.yml
+    file: accounts-service/tasks/destroy/task.yml
     params:
       <<: *cf-params
 
@@ -36,7 +36,7 @@ jobs:
   plan:
   - get: accounts-service
   - task: prepare-cf
-    file: ci/tasks/create-services/task.yml
+    file: accounts-service/ci/tasks/create-services/task.yml
     params:
       <<: *cf-params
       CF_DB_SERVICE: {{cf-db-service}}
