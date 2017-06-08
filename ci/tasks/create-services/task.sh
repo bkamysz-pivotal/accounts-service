@@ -11,7 +11,7 @@ source accounts-service/ci/accounts-service/common.sh
 login $CF_API_URL $CF_USERNAME $CF_PASSWORD $CF_SKIP_SSL
 
 create=true
-UUID=$(uuidgen)
+#UUID=$(uuidgen)
 
 ## Use temp org if none specified
 #if [ -z "$CF_ORG" ]; then
