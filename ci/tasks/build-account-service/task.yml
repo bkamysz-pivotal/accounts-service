@@ -7,8 +7,8 @@ image_resource:
     repository: java
     tag: '8'
 
-#inputs:
-#- name: pipeline
+inputs:
+- name: accounts-service
 #- name: project
 #- name: version
 
