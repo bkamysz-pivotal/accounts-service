@@ -61,8 +61,8 @@ jobs:
       ARTIFACT_ID: accounts
 #  - put: accounts-milestone
 #    params: { file: build-output/accounts-*.jar }
-#  - put: accounts-version
-#    params: { file: version/number }
+  - put: accounts-version
+    params: { file: version/number }
 
 #- name: itest-accounts
 #  public: true
