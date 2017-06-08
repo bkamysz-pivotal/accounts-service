@@ -22,4 +22,4 @@ params:
   CF_SPACE:
 
 run:
-  path: pipeline/ci/destroy.sh
+  path: ci/destroy/task.sh

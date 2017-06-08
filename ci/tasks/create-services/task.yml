@@ -25,4 +25,4 @@ params:
   CF_CONFIG_SERVER_LABEL:
 
 run:
-  path: ../tasks/create-services/prepare-cf.sh
+  path: ci/tasks/create-services/task.sh
