@@ -5,7 +5,7 @@
 set -e
 
 # copy the artifact to the task-output folder
-cp release/$CF_ARTIFACT_ID-*.jar prepare-manifest-output/.
+cp build-output/$CF_ARTIFACT_ID-*.jar prepare-manifest-output/.
 
 pushd prepare-manifest-output
 
