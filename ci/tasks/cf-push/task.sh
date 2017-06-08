@@ -9,7 +9,7 @@ cp accounts-service/build-output/$CF_ARTIFACT_ID.jar prepare-manifest-output/.
 
 pushd prepare-manifest-output
 
-ARTIFACT_PATH=$(ls $CF_ARTIFACT_ID-*.jar)
+ARTIFACT_PATH=$(ls $CF_ARTIFACT_ID.jar)
 
 cat <<EOF >manifest.yml
 ---
