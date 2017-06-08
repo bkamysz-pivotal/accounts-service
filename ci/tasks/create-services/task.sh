@@ -18,7 +18,7 @@ create=true
 #  CF_ORG="pivotal-bank-$UUID"
 #fi
 #
-#target_org $CF_ORG $create
+target_org $CF_ORG $create
 #
 ## Use temp space if none specified
 #if [ -z "$CF_SPACE" ]; then
