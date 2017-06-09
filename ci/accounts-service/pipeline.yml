@@ -28,6 +28,7 @@ jobs:
   public: true
   plan:
   - get: accounts-service
+    trigger: true
   - put: cf-delete
     resource: cf-env
     params:
@@ -61,6 +62,7 @@ jobs:
   serial: true
   plan:
   - get: accounts-service
+    passed: [ prepare-cf-env ]
     trigger: true
   - task: build
     file: accounts-service/ci/tasks/build-account-service/task.yml
@@ -71,13 +73,14 @@ jobs:
     params:
       command: zero-downtime-push
       manifest: accounts-service/manifest.yml
+      environment_variables:
+        TRUST_CERTS: {{cf-api-uri}}
 
 - name: prepare-cf-env
   public: true
   serial: true
   plan:
   - get: accounts-service
-    passed: [ build-accounts ]
     trigger: true
   - aggregate:
     - put: cf-create-service
@@ -127,7 +130,7 @@ resources:
 - name: cf-env
   type: cf-cli-resource
   source:
-    api: {{cf-api-url}}
+    api: https://{{cf-api-uri}}
     username: {{cf-username}}
     password: {{cf-password}}
     skip_cert_check: true
