@@ -38,7 +38,7 @@ apply plugin: "com.gorylenko.gradle-git-properties"
 test { finalizedBy jacocoTestReport }
 
 //task manifestFilter(type: Copy) {
-//		from 'manifest-unversioned.yml'
+//		from 'manifest.yml'
 //		into "${buildDir}/"
 //		rename { String fileName ->
 //			fileName.replace('-unversioned', '')
