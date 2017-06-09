@@ -10,4 +10,4 @@ pushd accounts-service
 popd
 
 #cp project/build/libs/$ARTIFACT_ID-$VERSION.jar build-output/.
-cp accounts-service/build/libs/$ARTIFACT_ID.jar build-output/.
+cp accounts-service/build/libs/$ARTIFACT_ID.jar accounts-service/.

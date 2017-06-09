@@ -11,7 +11,7 @@ inputs:
 - name: accounts-service
 
 outputs:
-- name: foobar
+- name: accounts-service
 
 params:
   TERM: dumb
