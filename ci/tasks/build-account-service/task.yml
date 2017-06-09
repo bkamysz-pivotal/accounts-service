@@ -10,8 +10,8 @@ image_resource:
 inputs:
 - name: accounts-service
 
-outputs:
-- name: accounts-service
+#outputs:
+#- name: accounts-service
 
 params:
   TERM: dumb
