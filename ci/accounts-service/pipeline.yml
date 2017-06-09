@@ -76,7 +76,7 @@ jobs:
         service_instance: config-server
         timeout: 300
         wait_for_service: true
-        configuration: '{ "count": 2, "git": { "uri": "https://github.com/bkamysz-pivotal/cf-SpringBootTrader-config", "label": "master" } }'
+        configuration: '{ "count": 2, "git": { "uri": "https://github.com/bkamysz-pivotal/cf-SpringBootTrader-config", "cloneOnStart": "true" } }'
     - put: cf-create-service
       resource: cf-env
       params:
@@ -95,20 +95,6 @@ jobs:
         service_instance: circuit-breaker-dashboard
         timeout: 300
         wait_for_service: true
-
-#- name: cf-push-accounts
-#  public: true
-#  serial: true
-#  plan:
-#  - get: accounts-service
-#    passed: [ prepare-cf-env ]
-#    trigger: true
-#  - get: build-output
-#  - put: cf-zero-downtime-push
-#    resource: cf-env
-#    params:
-#      command: zero-downtime-push
-#      manifest: accounts-service/manifest.yml
 
 resources:
 - name: accounts-service
