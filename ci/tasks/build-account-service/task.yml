@@ -9,15 +9,12 @@ image_resource:
 
 inputs:
 - name: accounts-service
-#- name: project
-#- name: version
 
 outputs:
 - name: build-output
 
 params:
   TERM: dumb
-#  ARTIFACT_ID:
 
 run:
   path: accounts-service/ci/tasks/build-account-service/task.sh

@@ -9,5 +9,5 @@ env:
 applications:
 - name: accounts
   random-route: true
-  path: build/libs/accounts.jar
+  path: build-output/accounts.jar
   services: [ traderdb, discovery-service, circuit-breaker-dashboard, config-server ]
