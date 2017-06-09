@@ -11,7 +11,6 @@ groups:
   jobs:
   - prepare-cf-env
   - build-accounts
-#  - cf-push-accounts
 - name: destroy
   jobs:
   - destroy
@@ -29,10 +28,32 @@ jobs:
   public: true
   plan:
   - get: accounts-service
-  - task: destroy
-    file: accounts-service/tasks/destroy/task.yml
+  - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: {{cf-db-service-name}}
+  - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: config-server
+  - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: discovery-service
+  - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: circuit-breaker-dashboard
+- put: cf-delete
+    resource: cf-env
     params:
-      <<: *cf-params
+      command: delete
+      app_name: accounts-service
+      delete_mapped_routes: true
 
 - name: build-accounts
   public: true
