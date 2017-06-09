@@ -20,7 +20,6 @@ jobs:
   public: true
   plan:
   - get: accounts-service
-    trigger: true
   - put: cf-delete
     resource: cf-env
     params:

@@ -10,7 +10,6 @@ buildscript {
 		mavenCentral()
 		maven { url "http://repo.spring.io/milestone" }
 		maven { url "http://repo.spring.io/snapshot" }
-		maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 	dependencies {
@@ -27,26 +26,12 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
-//apply from: "$projectDir/gradle/versioning.gradle"
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: "io.spring.dependency-management"
 apply plugin: "com.gorylenko.gradle-git-properties"
 
-//println version
-
 test { finalizedBy jacocoTestReport }
-
-//task manifestFilter(type: Copy) {
-//		from 'manifest.yml'
-//		into "${buildDir}/"
-//		rename { String fileName ->
-//			fileName.replace('-unversioned', '')
-//		}
-//		expand(version: "${version}")
-//}
-//
-//assemble { finalizedBy manifestFilter }
 
 jacocoTestReport {
 		group = "Reporting"
