@@ -7,21 +7,13 @@ resource_types:
     tag: latest
 
 groups:
-- name: develop
+- name: release
   jobs:
   - prepare-cf-env
   - build-accounts
 - name: destroy
   jobs:
   - destroy
-
-cf-params: &cf-params
-  CF_API_URL: {{cf-api-url}}
-  CF_SKIP_SSL: {{cf-skip-ssl}}
-  CF_USERNAME: {{cf-username}}
-  CF_PASSWORD: {{cf-password}}
-  CF_ORG: {{cf-org}}
-  CF_SPACE: {{cf-space}}
 
 jobs:
 - name: destroy
@@ -130,7 +122,7 @@ resources:
 - name: cf-env
   type: cf-cli-resource
   source:
-    api: https://{{cf-api-uri}}
+    api: {{cf-api-uri}}
     username: {{cf-username}}
     password: {{cf-password}}
     skip_cert_check: true
