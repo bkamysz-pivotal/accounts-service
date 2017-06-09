@@ -28,32 +28,33 @@ jobs:
   public: true
   plan:
   - get: accounts-service
-  - put: cf-delete-service
-      resource: cf-env
-      params:
-        command: delete-service
-        service_instance: {{cf-db-service-name}}
-  - put: cf-delete-service
-      resource: cf-env
-      params:
-        command: delete-service
-        service_instance: config-server
-  - put: cf-delete-service
-      resource: cf-env
-      params:
-        command: delete-service
-        service_instance: discovery-service
-  - put: cf-delete-service
-      resource: cf-env
-      params:
-        command: delete-service
-        service_instance: circuit-breaker-dashboard
-- put: cf-delete
+  - put: cf-delete
     resource: cf-env
     params:
       command: delete
       app_name: accounts-service
       delete_mapped_routes: true
+  - aggregate:
+    - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: {{cf-db-service-name}}
+    - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: config-server
+    - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: discovery-service
+    - put: cf-delete-service
+      resource: cf-env
+      params:
+        command: delete-service
+        service_instance: circuit-breaker-dashboard
 
 - name: build-accounts
   public: true
