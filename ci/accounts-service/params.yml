@@ -16,7 +16,9 @@ cf-org: bkamysz
 cf-space: dev
 cf-config-server-uri: https://github.com/bkamysz-pivotal/cf-SpringBootTrader-config
 cf-config-server-label: master
-cf-db-service: p-mysql pre-existing-plan traderdb
+cf-db-service: p-mysql
+cf-db-service-plan: pre-existing-plan
+cf-db-service-name: traderdb
 #cf-db-service: cleardb spark traderdb
 cf-accounts-service-name: accounts-service
 cf-accounts-service-host: accounts-service

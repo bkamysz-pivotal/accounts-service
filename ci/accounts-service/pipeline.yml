@@ -1,4 +1,11 @@
 ---
+resource_types:
+- name: cf-cli-resource
+  type: docker-image
+  source:
+    repository: pivotalpa/cf-cli-resource
+    tag: latest
+
 groups:
 - name: develop
   jobs:
@@ -39,9 +46,9 @@ jobs:
 #  - aggregate:
   - get: accounts-service
     trigger: true
-#    - get: project
-#      resource: accounts-service
-#      trigger: true
+    - get: project
+      resource: accounts-service
+      trigger: true
 #    - get: version
 #      resource: accounts-version
 #      params: { pre: rc }
@@ -61,13 +68,22 @@ jobs:
   - get: accounts-service
     passed: [ build-accounts ]
     trigger: true
-  - task: prepare-cf
-    file: accounts-service/ci/tasks/create-services/task.yml
+#  - task: cf-env
+#    file: accounts-service/ci/tasks/create-services/task.yml
+#    params:
+#      <<: *cf-params
+#      CF_DB_SERVICE: {{cf-db-service}}
+#      CF_CONFIG_SERVER_URI: {{cf-config-server-uri}}
+#      CF_CONFIG_SERVER_LABEL: {{cf-config-server-label}}
+  - put: cf-create-service
+    resource: cf-env
     params:
-      <<: *cf-params
-      CF_DB_SERVICE: {{cf-db-service}}
-      CF_CONFIG_SERVER_URI: {{cf-config-server-uri}}
-      CF_CONFIG_SERVER_LABEL: {{cf-config-server-label}}
+      command: create-service
+      service: {{cf-db-service}}
+      plan: {{cf-db-service-plan}}
+      service_instance: {{cf-db-service-name}}
+      timeout: 300
+      wait_for_service: true
 
 - name: cf-push-accounts
   public: true
@@ -138,12 +154,22 @@ resources:
 #    secret_access_key: {{s3-secret-access-key}}
 #    endpoint: {{s3-endpoint}}
 #
-- name: cf-deliver
-  type: cf
+#- name: cf-deliver
+#  type: cf
+#  source:
+#    api: {{cf-api-url}}
+#    skip_cert_check: true
+#    username: {{cf-username}}
+#    password: {{cf-password}}
+#    organization: {{cf-org}}
+#    space: {{cf-space}}
+
+- name: cf-env
+  type: cf-cli-resource
   source:
     api: {{cf-api-url}}
-    skip_cert_check: true
     username: {{cf-username}}
     password: {{cf-password}}
-    organization: {{cf-org}}
+    skip_cert_check: true
+    org: {{cf-org}}
     space: {{cf-space}}
