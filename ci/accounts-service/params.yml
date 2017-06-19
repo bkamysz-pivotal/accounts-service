@@ -13,9 +13,6 @@ cf-config-server-label: master
 cf-db-service: p-mysql
 cf-db-service-plan: pre-existing-plan
 cf-db-service-name: traderdb
-cf-accounts-service-name: accounts-service
-cf-accounts-service-host: accounts-service
-cf-accounts-service-services: traderdb, discovery-service, circuit-breaker-dashboard, config-server
 git-private-key: |
   -----BEGIN RSA PRIVATE KEY-----
   ...
