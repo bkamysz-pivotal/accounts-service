@@ -63,7 +63,7 @@ jobs:
     resource: cf-env
     params:
       command: zero-downtime-push
-      manifest: accounts-service/manifest.yml
+      manifest: build-output/manifest.yml
       environment_variables:
         TRUST_CERTS: {{cf-api-uri}}
         CF_TARGET: {{cf-target-url}}
