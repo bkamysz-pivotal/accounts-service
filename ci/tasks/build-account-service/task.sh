@@ -1,13 +1,11 @@
 #!/bin/bash
-
 set -e
 
-#VERSION=`cat version/number`
-
 pushd accounts-service
-#  ./gradlew -PversionNumber=$VERSION clean assemble
-  ./gradlew clean assemble
+    ./gradlew clean assemble
+
+    VERSION=`cat version-number`
 popd
 
-#cp project/build/libs/$ARTIFACT_ID-$VERSION.jar build-output/.
-cp accounts-service/build/libs/$ARTIFACT_ID.jar build-output/.
+mkdir build-output/libs && cp accounts-service/build/libs/$ARTIFACT_ID-$VERSION.jar build-output/libs/.
+cp accounts-service/build/manifest.yml build-output/.

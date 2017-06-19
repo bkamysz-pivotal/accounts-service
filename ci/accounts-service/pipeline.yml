@@ -93,7 +93,7 @@ jobs:
         service_instance: config-server
         timeout: 300
         wait_for_service: true
-        configuration: '{ "count": 2, "git": { "uri": "https://github.com/bkamysz-pivotal/cf-SpringBootTrader-config", "cloneOnStart": "true" } }'
+        configuration: '{ "count": 2, "git": { "uri": "https://github.com/pivotal-bank/cf-SpringBootTrader-config", "cloneOnStart": "true" } }'
     - put: cf-create-service
       resource: cf-env
       params:
